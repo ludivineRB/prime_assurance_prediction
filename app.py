@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import math
+from functions_model import transform_bmi
+import pickle
 
 def bmi_calculation(size, weight):
     return round((weight / size**2),2)
@@ -63,16 +65,21 @@ if submitted:
     ", bmi:", bmi,
     )
 
+    input_data = pd.DataFrame({
+        "age": [age],
+        "sex": [sex],
+        "bmi": [bmi],
+        "children": [nb_children],
+        "smoker": [is_smoker],
+        "region": [selection_region]
+    })
 
+    with open("model_pipeline.pkl", "rb") as file:
+        model = pickle.load(file)
 
-# input_data = pd.DataFrame([
-#     [age],
-#     [sex],
-#     [bmi],
-#     [nb_children],
-#     [is_smoker],
-#     [selection_region]
-# ])
+    # Test 
+    prediction = model.predict(input_data)
+    #print(prediction)
 
-# st.write(input_data)
+    st.write(prediction)
 
