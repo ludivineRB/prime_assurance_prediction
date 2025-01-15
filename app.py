@@ -2,7 +2,7 @@ import streamlit as st
 import pickle
 import pandas as pd
 import numpy as np
-
+from functions_model import transform_bmi
 
 with open("model_pipeline.pkl", "rb") as file:
     model = pickle.load(file)
