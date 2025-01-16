@@ -58,7 +58,7 @@ with st.form("my_form"):
     form_valid = True
         
     # soumission du formulaire
-    submitted = st.form_submit_button(label="Submit", disabled=form_valid)
+    submitted = st.form_submit_button(label="Submit")
 
 
 if submitted:
