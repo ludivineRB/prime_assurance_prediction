@@ -2,11 +2,21 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import math
-# from functions_model import transform_bmi
 import pickle
+import sys
+import os
 
+# built the way to using the file named "functions_model"
+root_way = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", ".."))
+sys.path.append(root_way)
+
+from functions_model import transform_bmi
+
+
+# functions
 def bmi_calculation(size, weight):
-    return round(((weight / 100) / size**2),2)
+    convert_weight = weight / 100
+    return round((convert_weight / size**2),2)
 
 @st.dialog("Your result")
 def display_result(charges):
@@ -18,6 +28,8 @@ st.sidebar.markdown("# Prediction Form 📈")
 
 st.write("## Evaluation of your insurance's charges")
 
+
+# prediction form
 with st.form("my_form"):
     # selection de la région de 'individu
     st.write("What is your gender ?")
@@ -53,8 +65,6 @@ with st.form("my_form"):
     st.write("What is your weight ?")
     weight = st.number_input("Insert your weight (kg) :")
     
-
-        
     # soumission du formulaire
     submitted = st.form_submit_button("Submit")
 
@@ -62,14 +72,14 @@ with st.form("my_form"):
 if submitted:
 
     bmi = bmi_calculation(size, weight)
-    st.write(
-    "sex:", sex,
-    ", smoker:", is_smoker,
-    ", age:", age, 
-    ", region:",selection_region, 
-    ", number of children:", nb_children,
-    ", bmi:", bmi,
-    )
+    # st.write(
+    # "sex:", sex,
+    # ", smoker:", is_smoker,
+    # ", age:", age, 
+    # ", region:",selection_region, 
+    # ", number of children:", nb_children,
+    # ", bmi:", bmi,
+    # )
 
     input_data = pd.DataFrame({
         "age": [age],
@@ -80,7 +90,14 @@ if submitted:
         "region": [selection_region]
     })
 
-    with open("model_pipeline.pkl", "rb") as file:
+    
+
+    # built the way to using the file named "model.pipeline.pkl"
+    pipeline_way = os.path.abspath(os.path.join(os.path.dirname(__file__),"..","..","model_pipeline.pkl"))
+    if not os.path.exists(pipeline_way):
+        raise FileNotFoundError(f"The file {pipeline_way} doesn't find")
+
+    with open(pipeline_way, "rb") as file:
         model = pickle.load(file)
 
     # Test 
