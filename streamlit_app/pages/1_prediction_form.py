@@ -2,12 +2,11 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 import math
-from functions_model import transform_bmi
+# from functions_model import transform_bmi
 import pickle
 
 def bmi_calculation(size, weight):
-    convert_cm = weight / 100
-    return round((convert_cm / size**2),2)
+    return round(((weight / 100) / size**2),2)
 
 @st.dialog("Your result")
 def display_result(charges):
@@ -15,7 +14,7 @@ def display_result(charges):
         st.write(f"After our calculation, the cost of your life's insurance is estimated at:")
         st.write(f":red[{charges} $ PER YEAR]")
 
-
+st.sidebar.markdown("# Prediction Form 📈")
 
 st.write("## Evaluation of your insurance's charges")
 
@@ -54,11 +53,10 @@ with st.form("my_form"):
     st.write("What is your weight ?")
     weight = st.number_input("Insert your weight (kg) :")
     
-    # condition de soumission du formulaire 
-    form_valid = True
+
         
     # soumission du formulaire
-    submitted = st.form_submit_button(label="Submit", disabled=form_valid)
+    submitted = st.form_submit_button("Submit")
 
 
 if submitted:
